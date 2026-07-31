@@ -9,4 +9,4 @@ def get_asr_model():
 def transcribe_audio(filepath: str) -> str:
     model = get_asr_model()
     result = model(filepath)
-    return result[model]
+    return result["text"]
