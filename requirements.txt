@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+python-multipart
+transformers
+torch
+pillow
+langchain
+langchain-community
+chromadb
+sentence-transformers
