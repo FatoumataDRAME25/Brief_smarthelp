@@ -4,3 +4,5 @@ __pycache__
 .env
 temp/*
 !temp/.gitkeep
+test_audio.wav
+test_asr.py
