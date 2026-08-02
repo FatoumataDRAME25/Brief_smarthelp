@@ -40,12 +40,27 @@ async def support_ticket(
         if audio_file:
             audio_path = f"temp/{audio_file.filename}"
             save_temp_file(audio_file, audio_path)  # sauvegarder le fichier
-            transcription = transcribe_audio(audio_path)  # appeler le service ASR
+
+            try:
+                transcription = transcribe_audio(audio_path) # appeler le service ASR
+            except Exception as e:
+                raise HTTPException(
+                status_code=422,
+                detail=f"Le fichier audio fourni est invalide ou corrompu : {str(e)}"
+            )
 
         if image_file:
             image_path = f"temp/{image_file.filename}"
             save_temp_file(image_file, image_path)
-            diagnostic_image = analyze_image(image_path)
+
+            try:
+                diagnostic_image = analyze_image(image_path)
+            except Exception as e:
+                raise HTTPException(
+                status_code=422,
+                detail=f"Le fichier image fourni est invalide ou corrompu : {str(e)}"
+            )
+
 
         elements_valides = [e for e in [transcription, diagnostic_image, texte] if e]
         texte_final = " ".join(elements_valides)
