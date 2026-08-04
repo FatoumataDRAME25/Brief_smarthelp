@@ -4,3 +4,10 @@ __pycache__
 .env
 temp/*
 !temp/.gitkeep
+test_audio.wav
+test_asr.py
+test_image.jpg
+test_rag.py
+test_vision.py
+test_pipeline.wav
+fake_audio.mp3
