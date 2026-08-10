@@ -1,14 +1,19 @@
+import json
+
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from typing import Optional
 import os
 from app.services.asr_service import transcribe_audio
 from app.services.vision_service import analyze_image
 from app.services.rag_service import search_knowledge_base
+from app.services.llm_service import analyze_ticket
 from app.schemas.ticket_schema import StatutTicket, TicketResponse
 import shutil
 
 
 router = APIRouter()
+
+
 
 
 def save_temp_file(upload_file: UploadFile, destination: str):
@@ -65,20 +70,27 @@ async def support_ticket(
         elements_valides = [e for e in [transcription, diagnostic_image, texte] if e]
         texte_final = " ".join(elements_valides)
         
-        regle = search_knowledge_base(texte_final)  # appeler le RAG
+        context = search_knowledge_base(texte_final)
+        print("========== CONTEXT RAG ==========")
+        print(context)
 
-        statut_final = StatutTicket.A_VERIFIER
-        for statut in StatutTicket:
-            if statut.value in regle:
-                statut_final = statut
-                break
-
-        return TicketResponse(
+        resultat_llm = analyze_ticket(
+            context=context,
+            texte=texte,
             transcription=transcription,
-            diagnostic_image=diagnostic_image,
-            regle_appliquee=regle,
-            statut_propose=statut_final
+            image=diagnostic_image
         )
+
+        resultat_llm = json.loads(resultat_llm)
+
+        print("========== RÉPONSE DU LLM ==========")
+        print(resultat_llm)
+
+        return {
+            "transcription": transcription,
+            "diagnostic_image": diagnostic_image,
+            "resultat_llm": resultat_llm
+        }
     finally:
         
         if audio_file and os.path.exists(audio_path):
