@@ -197,7 +197,7 @@ Réponds UNIQUEMENT au format JSON suivant :
         "numero": "1.1",
         "resume": "Produit cassé avec photo"
     }},
-  ]
+  ],
   "decision": "Le client est éligible à un remboursement intégral.",
   "coherence": "Les informations fournies sont cohérentes.",
   "statut_propose": "A_VERIFIER",
@@ -212,7 +212,7 @@ Le champ "statut_propose" doit toujours contenir exactement l'une des valeurs su
 - REFUSE
 - ECHANGE_GRATUIT
 - EXPEDITION_PIECE
-- EN_ATTENTE_JUSTIFICATIFS
+- EN_ATTENTE_DE_JUSTIFICATIFS
 - A_VERIFIER
 
 N'utilise jamais une autre valeur.
